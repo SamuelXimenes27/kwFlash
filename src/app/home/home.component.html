@@ -1,0 +1,233 @@
+<div class="flex justify-center items-center">
+  <div>
+    <h2 class="text-2xl font-bold mb-4">Listagem de Atividades</h2>
+
+    <div class="flex mb-4">
+      <input type="text" placeholder="Filtrar por Título" [(ngModel)]="filterTitle"
+        class="border border-gray-300 px-4 py-2 mr-2 rounded-lg">
+      <button (click)="openAddActivityPopup()"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Adicionar</button>
+    </div>
+
+    <div *ngIf="isAddActivityPopupOpen" class="modal-container">
+      <div class="modal-content bg-white p-8 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Adicionar Atividade</h2>
+
+        <form (ngSubmit)="addActivity()" #addActivityForm="ngForm" novalidate>
+          <div class="mb-4">
+            <label for="title" class="block text-gray-700">Título:</label>
+            <input type="text" id="title" name="title" [(ngModel)]="newActivity.title"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['title'].invalid" class="text-red-500">O
+              título é obrigatório.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="startDate" class="block text-gray-700">Data de Início:</label>
+            <input type="date" id="startDate" name="startDate" [(ngModel)]="newActivity.startDate"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['startDate'].invalid"
+              class="text-red-500">A data de início é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="endDate" class="block text-gray-700">Data de Término:</label>
+            <input type="date" id="endDate" name="endDate" [(ngModel)]="newActivity.endDate"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['endDate'].invalid" class="text-red-500">A
+              data de término é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="schoolId" class="block text-gray-700">Escola:</label>
+            <select id="schoolId" name="schoolId" [(ngModel)]="newActivity.schoolId"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+              <option *ngFor="let school of schools" [value]="school.title">{{ school.title }}</option>
+            </select>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['schoolId'].invalid" class="text-red-500">
+              A escola é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="description" class="block text-gray-700">Descrição:</label>
+            <textarea id="description" name="description" [(ngModel)]="newActivity.description"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required></textarea>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['description'].invalid"
+              class="text-red-500">A descrição é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="typeActivitie" class="block text-gray-700">Tipo de Atividade:</label>
+            <select id="typeActivitie" name="typeActivitie" [(ngModel)]="newActivity.typeActivitie"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+              <option value="Atividade">Atividade</option>
+              <option value="Projeto">Projeto</option>
+              <option value="Clube">Clube</option>
+              <option value="Visita de Estudo">Visita de Estudo</option>
+            </select>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['typeActivitie'].invalid"
+              class="text-red-500">O tipo de atividade é obrigatório.</div>
+          </div>
+
+          <div class="mb-4" *ngIf="newActivity.typeActivitie === 'Visita de Estudo'">
+            <label for="guide" class="block text-gray-700">Roteiro:</label>
+            <textarea id="guide" name="guide" [(ngModel)]="newActivity.guide"
+              class="border border-gray-300 px-4 py-2 rounded-lg"></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Adicionar</button>
+            <button type="button" (click)="closeAddActivityPopup()"
+              class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg ml-2">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+    <table class="border-collapse border border-gray-300">
+      <thead>
+        <tr>
+          <th class="border-b border-gray-300 px-4 py-2">Tipo de Atividade</th>
+          <th class="border-b border-gray-300 px-4 py-2">Título da Atividade</th>
+          <th class="border-b border-gray-300 px-4 py-2">Data de início</th>
+          <th class="border-b border-gray-300 px-4 py-2">Escola</th>
+          <th class="border-b border-gray-300 px-4 py-2">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let activity of activities | filter: filterTitle">
+          <td class="border-b border-gray-300 px-4 py-2">{{ activity.typeActivitie }}</td>
+          <td class="border-b border-gray-300 px-4 py-2">{{ activity.title }}</td>
+          <td class="border-b border-gray-300 px-4 py-2">{{ activity.startDate }}</td>
+          <td class="border-b border-gray-300 px-4 py-2">{{ activity.schoolId }}</td>
+          <td class="border-b border-gray-300 px-4 py-2">
+            <button (click)="openEditActivityPopup(editActivityModal, activity)"
+              class="bg-yellow-500 mr-2 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg">
+              <i class="fa fa-pencil"></i> Editar
+            </button>
+            <button (click)="openDeleteConfirmationPopup(deleteConfirmationModal, activity)"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+              <i class="fa fa-trash"></i> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #editActivityModal let-modal>
+  <div class="modal-container">
+    <div class="modal-content bg-white p-8 rounded-lg">
+      <div class="modal-header">
+        <h4 class="modal-title" style="font-weight: bold;">Editar Atividade</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveEditedActivity()" #editActivityForm="ngForm" novalidate>
+          <div class="mb-4">
+            <label for="title" class="block text-gray-700">Título:</label>
+            <input type="text" id="title" name="title" [(ngModel)]="editedActivity.title"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['title'].invalid" class="text-red-500">O
+              título é obrigatório.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="startDate" class="block text-gray-700">Data de Início:</label>
+            <input type="date" id="startDate" name="startDate" [(ngModel)]="editedActivity.startDate"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['startDate'].invalid"
+              class="text-red-500">A data de início é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="endDate" class="block text-gray-700">Data de Término:</label>
+            <input type="date" id="endDate" name="endDate" [(ngModel)]="editedActivity.endDate"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['endDate'].invalid"
+              class="text-red-500">A data de término é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="schoolId" class="block text-gray-700">Escola:</label>
+            <select id="schoolId" name="schoolId" [(ngModel)]="editedActivity.schoolId"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+              <option *ngFor="let school of schools" [value]="school.title">{{ school.title }}</option>
+            </select>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['schoolId'].invalid"
+              class="text-red-500">A escola é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="description" class="block text-gray-700">Descrição:</label>
+            <textarea id="description" name="description" [(ngModel)]="editedActivity.description"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required></textarea>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['description'].invalid"
+              class="text-red-500">A descrição é obrigatória.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="typeActivitie" class="block text-gray-700">Tipo de Atividade:</label>
+            <select id="typeActivitie" name="typeActivitie" [(ngModel)]="editedActivity.typeActivitie"
+              class="border border-gray-300 px-4 py-2 rounded-lg" required>
+              <option value="Atividade">Atividade</option>
+              <option value="Projeto">Projeto</option>
+              <option value="Clube">Clube</option>
+              <option value="Visita de Estudo">Visita de Estudo</option>
+            </select>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['typeActivitie'].invalid"
+              class="text-red-500">O tipo de atividade é obrigatório.</div>
+          </div>
+
+          <div class="mb-4" *ngIf="editedActivity.typeActivitie === 'Visita de Estudo'">
+            <label for="guide" class="block text-gray-700">Roteiro:</label>
+            <textarea id="guide" name="guide" [(ngModel)]="editedActivity.guide"
+              class="border border-gray-300 px-4 py-2 rounded-lg"></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit"
+              class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Salvar</button>
+            <button type="button"
+              class="btn btn-secondary mr-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg"
+              (click)="modal.dismiss()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #deleteConfirmationModal let-modal>
+  <div class="modal-container">
+    <div class="modal-content bg-white p-8 rounded-lg">
+      <div class="modal-header">
+        <h4 class="modal-title" style="font-weight: bold;">Confirmar Exclusão</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Para excluir a atividade digite a senha:</p>
+        <input type="password" placeholder="Senha do Administrador" [(ngModel)]="adminPassword"
+          class="border border-gray-300 px-4 py-2 rounded-lg mb-2">
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+          class="btn btn-secondary mr-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg"
+          (click)="modal.dismiss()">Cancelar</button>
+        <button type="button"
+          class="btn btn-danger bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+          (click)="modal.close('confirm')">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
