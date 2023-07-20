@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { ActivityService } from './services/activities.service';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from './pipes/filter.pipe';
+import { MaterialModule } from './material.module';
 
 const routes: Routes = [
   { path: 'activities', component: ActivitiesComponent },
@@ -31,7 +32,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     FormsModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   providers: [ActivityService],
   bootstrap: [AppComponent]
