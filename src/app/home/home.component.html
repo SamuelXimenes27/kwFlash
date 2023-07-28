@@ -1,12 +1,17 @@
 <p>
-  <mat-toolbar>
+  <mat-toolbar class="toolbar">
     <span class="spacer">Lista de Atividades</span>
+    <div class="flex mb-4">
+      <input type="text" placeholder="Filtrar por Título" [(ngModel)]="filterTitle"
+        class="border border-gray-300 px-4 mt-4 mr-2 rounded-lg">
+    </div>
     <a (click)="openAddActivityPopup(addActivityPopup)" mat-raised-button color="primary" id="add">
       <mat-icon>add</mat-icon>
       Nova Atividade
     </a>
   </mat-toolbar>
 </p>
+
 
 <div *ngIf="loading; else list">
   <p>Carregando atividades...</p>
@@ -15,7 +20,7 @@
 <ng-template #list>
   <div *ngIf="activities.length === 0" class="alert alert-info">Nenhuma atividade encontrada</div>
   <div fxFlexFill fxLayout="column">
-    <table mat-table [dataSource]="activities" class="mat-elevation-z8">
+    <table mat-table [dataSource]="activities | filter:filterTitle" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
         <mat-cell *matCellDef="let item"> {{ item.id }} </mat-cell>
