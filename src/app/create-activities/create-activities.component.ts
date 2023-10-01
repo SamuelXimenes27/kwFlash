@@ -3,9 +3,9 @@ import { Activity } from '../models/activities.model';
 import { ActivityService } from '../services/activities.service';
 
 @Component({
-  selector: 'app-activities',
-  templateUrl: './activities.component.html',
-  styleUrls: ['./activities.component.css']
+  selector: 'app-create-activities',
+  templateUrl: './create-activities.component.html',
+  styleUrls: ['./create-activities.component.css']
 })
 export class ActivitiesComponent implements OnInit {
   activities: Activity[] = [];

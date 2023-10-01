@@ -1,0 +1,40 @@
+<div class="flex justify-center items-center">
+    <div>
+        <h2 class="text-2xl font-bold mb-4">Activities</h2>
+
+        <div *ngFor="let activity of activities" class="mb-4">
+            <div>{{ activity.typeActivitie }}</div>
+            <div>{{ activity.title }}</div>
+            <div>{{ activity.startDate }}</div>
+            <div>{{ activity.schoolId }}</div>
+        </div>
+
+        <h3 class="text-lg font-bold mb-4">Add Activity</h3>
+        <form (ngSubmit)="addActivity(formActivity.value)" #formActivity="ngForm">
+            <div class="mb-4">
+                <label for="typeActivitie" class="block text-gray-700">Activity Type:</label>
+                <input type="number" id="typeActivitie" name="typeActivitie"
+                    class="border border-gray-300 px-4 py-2 rounded-lg" ngModel required>
+            </div>
+            <div class="mb-4">
+                <label for="title" class="block text-gray-700">Title:</label>
+                <input type="text" id="title" name="title" class="border border-gray-300 px-4 py-2 rounded-lg" ngModel
+                    required>
+            </div>
+            <div class="mb-4">
+                <label for="startDate" class="block text-gray-700">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" class="border border-gray-300 px-4 py-2 rounded-lg"
+                    ngModel required>
+            </div>
+            <div class="mb-4">
+                <label for="schoolId" class="block text-gray-700">School ID:</label>
+                <input type="number" id="schoolId" name="schoolId" class="border border-gray-300 px-4 py-2 rounded-lg"
+                    ngModel required>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Add</button>
+            </div>
+        </form>
+    </div>
+</div>

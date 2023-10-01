@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { School } from '../models/school.model';
 
 @Component({
-  selector: 'app-schools',
-  templateUrl: './schools.component.html',
-  styleUrls: ['./schools.component.css']
+  selector: 'app-create-schools',
+  templateUrl: './create-schools.component.html',
+  styleUrls: ['./create-schools.component.css']
 })
 export class SchoolsComponent implements OnInit {
   schools: School[] = [];
