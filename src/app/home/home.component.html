@@ -1,25 +1,24 @@
 <p>
   <mat-toolbar class="toolbar">
-    <span class="spacer">Lista de Atividades</span>
+    <span class="spacer">Activity List</span>
     <div class="flex mb-4">
-      <input type="text" placeholder="Filtrar por Título" [(ngModel)]="filterTitle"
+      <input type="text" placeholder="Filter by Title" [(ngModel)]="filterTitle"
         class="border border-gray-300 px-4 mt-4 mr-2 rounded-lg">
     </div>
     <a (click)="openAddActivityPopup(addActivityPopup)" mat-raised-button color="primary" id="add">
       <mat-icon>add</mat-icon>
-      Nova Atividade
+      New Activity
     </a>
   </mat-toolbar>
 </p>
 
-
 <div id="loader" *ngIf="loading; else list">
   <span class="loader"></span><br>
-  <p>Carregando atividades...</p>
+  <p>Loading activities...</p>
 </div>
 
 <ng-template #list>
-  <div *ngIf="activities.length === 0" class="alert alert-info">Nenhuma atividade encontrada</div>
+  <div *ngIf="activities.length === 0" class="alert alert-info">No activities found</div>
   <div fxFlexFill fxLayout="column">
     <table mat-table [dataSource]="activities | filter:filterTitle" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
@@ -27,19 +26,19 @@
         <mat-cell *matCellDef="let item"> {{ item.id }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef> Título da Atividade </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Activity Title </mat-header-cell>
         <mat-cell *matCellDef="let item"> {{ item.title }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="startDate">
-        <mat-header-cell *matHeaderCellDef> Data de Início </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
         <mat-cell *matCellDef="let item"> {{ item.startDate }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="schoolId">
-        <mat-header-cell *matHeaderCellDef> Escola </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> School </mat-header-cell>
         <mat-cell *matCellDef="let item"> {{ item.schoolId }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
         <mat-cell *matCellDef="let item">
           <a (click)="openEditActivityPopup(editActivityModal, item)" mat-raised-button color="accent">Edit</a>&nbsp;
           <button (click)="openDeleteConfirmationPopup(deleteConfirmationModal, item)" mat-button
@@ -56,7 +55,7 @@
   <div class="modal-container">
     <div class="modal-content bg-white p-8 rounded-lg">
       <div class="modal-header">
-        <h4 class="modal-title" style="font-weight: bold;">Adicionar Atividade</h4>
+        <h4 class="modal-title" style="font-weight: bold;">Add Activity</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -65,58 +64,56 @@
         <form (ngSubmit)="addActivity()" #addActivityForm="ngForm" novalidate>
 
           <div class="mb-4">
-            <label for="title" class="block text-gray-700">Título:</label>
+            <label for="title" class="block text-gray-700">Title:</label>
             <input type="text" id="title" name="title" [(ngModel)]="newActivity.title"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
-            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['title'].invalid" class="text-red-500">O
-              título é obrigatório.</div>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['title'].invalid" class="text-red-500">Title is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="startDate" class="block text-gray-700">Data de Início:</label>
+            <label for="startDate" class="block text-gray-700">Start Date:</label>
             <input type="date" id="startDate" name="startDate" [(ngModel)]="newActivity.startDate"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
             <div *ngIf="addActivityForm.submitted && addActivityForm.controls['startDate'].invalid"
-              class="text-red-500">A data de início é obrigatória.</div>
+              class="text-red-500">Start Date is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="endDate" class="block text-gray-700">Data de Término:</label>
+            <label for="endDate" class="block text-gray-700">Finish Date:</label>
             <input type="date" id="endDate" name="endDate" [(ngModel)]="newActivity.endDate"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
-            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['endDate'].invalid" class="text-red-500">A
-              data de término é obrigatória.</div>
+            <div *ngIf="addActivityForm.submitted && addActivityForm.controls['endDate'].invalid" class="text-red-500">Finish Date is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="schoolId" class="block text-gray-700">Escola:</label>
+            <label for="schoolId" class="block text-gray-700">School:</label>
             <select id="schoolId" name="schoolId" [(ngModel)]="newActivity.schoolId"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
               <option *ngFor="let school of schools" [value]="school.title">{{ school.title }}</option>
             </select>
             <div *ngIf="addActivityForm.submitted && addActivityForm.controls['schoolId'].invalid" class="text-red-500">
-              A escola é obrigatória.</div>
+              School is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="description" class="block text-gray-700">Descrição:</label>
+            <label for="description" class="block text-gray-700">Description:</label>
             <textarea id="description" name="description" [(ngModel)]="newActivity.description"
               class="border border-gray-300 px-4 py-2 rounded-lg" required></textarea>
             <div *ngIf="addActivityForm.submitted && addActivityForm.controls['description'].invalid"
-              class="text-red-500">A descrição é obrigatória.</div>
+              class="text-red-500">Description is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="typeActivitie" class="block text-gray-700">Tipo de Atividade:</label>
+            <label for="typeActivitie" class="block text-gray-700">Activity Type:</label>
             <select id="typeActivitie" name="typeActivitie" [(ngModel)]="newActivity.typeActivitie"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
-              <option value="Atividade">Atividade</option>
-              <option value="Projeto">Projeto</option>
-              <option value="Clube">Clube</option>
-              <option value="Visita de Estudo">Visita de Estudo</option>
+              <option value="Atividade">Activity</option>
+              <option value="Projeto">Project</option>
+              <option value="Clube">Club</option>
+              <option value="Visita de Estudo">Study Visit</option>
             </select>
             <div *ngIf="addActivityForm.submitted && addActivityForm.controls['typeActivitie'].invalid"
-              class="text-red-500">O tipo de atividade é obrigatório.</div>
+              class="text-red-500">Study Visit is required.</div>
           </div>
 
           <div class="mb-4" *ngIf="newActivity.typeActivitie === 'Visita de Estudo'">
@@ -127,9 +124,9 @@
 
           <div class="flex justify-end">
             <button type="submit"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Adicionar</button>
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Add</button>
             <button type="button" (click)="modal.dismiss()"
-              class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg ml-2">Cancelar</button>
+              class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg ml-2">Cancel</button>
           </div>
         </form>
       </div>
@@ -141,7 +138,7 @@
   <div class="modal-container">
     <div class="modal-content bg-white p-8 rounded-lg">
       <div class="modal-header">
-        <h4 class="modal-title" style="font-weight: bold;">Editar Atividade</h4>
+        <h4 class="modal-title" style="font-weight: bold;">Edit Activity</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -149,72 +146,71 @@
       <div class="modal-body">
         <form (ngSubmit)="saveEditedActivity()" #editActivityForm="ngForm" novalidate>
           <div class="mb-4">
-            <label for="title" class="block text-gray-700">Título:</label>
+            <label for="title" class="block text-gray-700">Title:</label>
             <input type="text" id="title" name="title" [(ngModel)]="editedActivity.title"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
-            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['title'].invalid" class="text-red-500">O
-              título é obrigatório.</div>
+            <div *ngIf="editActivityForm.submitted && editActivityForm.controls['title'].invalid" class="text-red-500">Title is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="startDate" class="block text-gray-700">Data de Início:</label>
+            <label for="startDate" class="block text-gray-700">Start Date:</label>
             <input type="date" id="startDate" name="startDate" [(ngModel)]="editedActivity.startDate"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
             <div *ngIf="editActivityForm.submitted && editActivityForm.controls['startDate'].invalid"
-              class="text-red-500">A data de início é obrigatória.</div>
+              class="text-red-500">Start Date is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="endDate" class="block text-gray-700">Data de Término:</label>
+            <label for="endDate" class="block text-gray-700">Finish Date:</label>
             <input type="date" id="endDate" name="endDate" [(ngModel)]="editedActivity.endDate"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
             <div *ngIf="editActivityForm.submitted && editActivityForm.controls['endDate'].invalid"
-              class="text-red-500">A data de término é obrigatória.</div>
+              class="text-red-500">Finish Date is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="schoolId" class="block text-gray-700">Escola:</label>
+            <label for="schoolId" class="block text-gray-700">School:</label>
             <select id="schoolId" name="schoolId" [(ngModel)]="editedActivity.schoolId"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
               <option *ngFor="let school of schools" [value]="school.title">{{ school.title }}</option>
             </select>
             <div *ngIf="editActivityForm.submitted && editActivityForm.controls['schoolId'].invalid"
-              class="text-red-500">A escola é obrigatória.</div>
+              class="text-red-500">School is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="description" class="block text-gray-700">Descrição:</label>
+            <label for="description" class="block text-gray-700">Description:</label>
             <textarea id="description" name="description" [(ngModel)]="editedActivity.description"
               class="border border-gray-300 px-4 py-2 rounded-lg" required></textarea>
             <div *ngIf="editActivityForm.submitted && editActivityForm.controls['description'].invalid"
-              class="text-red-500">A descrição é obrigatória.</div>
+              class="text-red-500">Description is required.</div>
           </div>
 
           <div class="mb-4">
-            <label for="typeActivitie" class="block text-gray-700">Tipo de Atividade:</label>
+            <label for="typeActivitie" class="block text-gray-700">Activity Type:</label>
             <select id="typeActivitie" name="typeActivitie" [(ngModel)]="editedActivity.typeActivitie"
               class="border border-gray-300 px-4 py-2 rounded-lg" required>
-              <option value="Atividade">Atividade</option>
-              <option value="Projeto">Projeto</option>
-              <option value="Clube">Clube</option>
-              <option value="Visita de Estudo">Visita de Estudo</option>
+              <option value="Atividade">Activity</option>
+              <option value="Projeto">Project</option>
+              <option value="Clube">Club</option>
+              <option value="Visita de Estudo">Study Visit</option>
             </select>
             <div *ngIf="editActivityForm.submitted && editActivityForm.controls['typeActivitie'].invalid"
-              class="text-red-500">O tipo de atividade é obrigatório.</div>
+              class="text-red-500">Activity Type is required.</div>
           </div>
 
           <div class="mb-4" *ngIf="editedActivity.typeActivitie === 'Visita de Estudo'">
-            <label for="guide" class="block text-gray-700">Roteiro:</label>
+            <label for="guide" class="block text-gray-700">Script:</label>
             <textarea id="guide" name="guide" [(ngModel)]="editedActivity.guide"
               class="border border-gray-300 px-4 py-2 rounded-lg"></textarea>
           </div>
 
           <div class="flex justify-end">
             <button type="submit"
-              class="btn btn-primary bg-blue-500 mr-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Salvar</button>
+              class="btn btn-primary bg-blue-500 mr-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Save</button>
             <button type="button"
               class="btn btn-secondary mr-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg"
-              (click)="modal.dismiss()">Cancelar</button>
+              (click)="modal.dismiss()">Cancel</button>
           </div>
         </form>
       </div>
@@ -226,23 +222,23 @@
   <div class="modal-container">
     <div class="modal-content bg-white p-8 rounded-lg">
       <div class="modal-header">
-        <h4 class="modal-title" style="font-weight: bold;">Confirmar Exclusão</h4>
+        <h4 class="modal-title" style="font-weight: bold;">Confirm Exclusion</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Para excluir a atividade digite a senha:</p>
-        <input type="password" placeholder="Senha do Administrador" [(ngModel)]="adminPassword"
+        <p>To delete the activity, enter the password:</p>
+        <input type="password" placeholder="Password Admin" [(ngModel)]="adminPassword"
           class="border border-gray-300 px-4 py-2 rounded-lg mb-2">
       </div>
       <div class="modal-footer">
         <button type="button"
           class="btn btn-secondary mr-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg"
-          (click)="modal.dismiss()">Cancelar</button>
+          (click)="modal.dismiss()">Cancel</button>
         <button type="button"
           class="btn btn-danger bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
-          (click)="modal.close('confirm')">Confirmar</button>
+          (click)="modal.close('confirm')">Confirm</button>
       </div>
     </div>
   </div>
