@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Activity } from '../models/activities.model';
 import { forkJoin, tap } from 'rxjs';
+import { ToastService } from '../services/toasts.service';
 
 @Component({
   selector: 'app-home',
@@ -27,15 +28,13 @@ export class HomeComponent implements OnInit {
 
   adminPassword: string = '';
 
-  constructor(private http: HttpClient, private modalService: NgbModal) { }
+  constructor(private http: HttpClient, private modalService: NgbModal, private toastService: ToastService) {}
 
   ngOnInit(): void {
     forkJoin([this.getActivities(), this.getSchools()]).subscribe(() => {
       this.loading = false;
     });
   }
-
-
 
   closeAddActivityPopup() {
     this.isAddActivityPopupOpen = false;
@@ -45,35 +44,38 @@ export class HomeComponent implements OnInit {
     if (!this.newActivity.title || !this.newActivity.startDate || !this.newActivity.endDate || !this.newActivity.schoolId || !this.newActivity.description || !this.newActivity.typeActivitie) {
       return;
     }
-
+  
     this.http.post('https://64b5a247f3dbab5a95c78c9f.mockapi.io/Activities', this.newActivity)
       .subscribe(
         {
           next: (v) => {
-            this.getActivities();
-            this.closeAddActivityPopup();
+            this.updateAfterAction();
+            this.modalService.dismissAll();
+            this.toastService.ShowSucess('Atividade Adicionada','');
           },
           error: (e) => console.error('Erro ao adicionar atividade:', e),
         }
       );
   }
 
-
   saveEditedActivity() {
     if (!this.editedActivity.title || !this.editedActivity.startDate || !this.editedActivity.endDate || !this.editedActivity.schoolId || !this.editedActivity.description || !this.editedActivity.typeActivitie) {
       return;
     }
+  
     this.http.put(`https://64b5a247f3dbab5a95c78c9f.mockapi.io/Activities/${this.editedActivity.id}`, this.editedActivity)
       .subscribe(
         {
-          next: (v) => {
-            this.getActivities();
-            this.modalService.dismissAll();
+          next: () => {
+            this.updateAfterAction();
+            this.modalService.dismissAll(); 
+            this.toastService.ShowSucess('Atividade Editada','');
           },
           error: (e) => console.error('Erro ao atualizar atividade:', e),
         }
       );
   }
+  
 
   deleteActivity() {
     if (this.deleteActivityId !== null) {
@@ -81,10 +83,13 @@ export class HomeComponent implements OnInit {
         .subscribe(
           {
             next: (v) => {
-              this.getActivities();
-              this.deleteActivityId = null;
+              this.updateAfterAction();
+              this.modalService.dismissAll(); 
+              this.toastService.ShowSucess('Atividade Excluida','');
             },
-            error: (e) => console.error('Erro ao excluir atividade:', e),
+            error: (e) => {
+              console.error('Erro ao excluir atividade:', e);
+            },
           }
         );
     }
@@ -119,29 +124,37 @@ export class HomeComponent implements OnInit {
 
   openAddActivityPopup(content: any) {
     this.isAddActivityPopupOpen = true;
-
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+  
+    const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  
+    modalRef.result.then(
       (result) => {
         if (result === 'save') {
-          this.addActivity();
+          this.addActivity(); 
         }
       },
       (reason) => {
       }
     );
   }
+  
 
   openEditActivityPopup(content: any, activity?: Activity) {
     if (activity) {
       this.editedActivity = { ...activity };
     }
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+    this.isAddActivityPopupOpen = true;
+
+    const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+
+    modalRef.result.then(
       (result) => {
         if (result === 'save') {
           this.saveEditedActivity();
         }
       },
       (reason) => {
+        this.closeAddActivityPopup();
       }
     );
   }
@@ -155,6 +168,12 @@ export class HomeComponent implements OnInit {
         if (result === 'confirm' && this.adminPassword === 'flashalgarve') {
           this.deleteActivity();
         }
+        else if(result === 'confirm' && this.adminPassword !== 'flashalgarve'){
+          this.toastService.ShowError('Senha errada','');
+        }
+        else {
+          this.toastService.ShowError('Erro ao excluir','');
+        }
       },
       (reason) => {
         this.deleteActivityId = null;
@@ -165,4 +184,12 @@ export class HomeComponent implements OnInit {
   editActivity(activity: Activity) {
     this.openEditActivityPopup(activity);
   }
+  
+  private updateAfterAction() {
+    forkJoin([this.getActivities(), this.getSchools()])
+      .subscribe(() => {
+      });
+  }
+  
+
 }

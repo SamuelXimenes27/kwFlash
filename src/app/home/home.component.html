@@ -13,7 +13,8 @@
 </p>
 
 
-<div *ngIf="loading; else list">
+<div id="loader" *ngIf="loading; else list">
+  <span class="loader"></span><br>
   <p>Carregando atividades...</p>
 </div>
 

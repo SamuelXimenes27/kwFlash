@@ -12,6 +12,9 @@ import { ActivityService } from './services/activities.service';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from './pipes/filter.pipe';
 import { MaterialModule } from './material.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {ToastrModule} from 'ngx-toastr'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: 'create-activities', component: ActivitiesComponent },
@@ -25,7 +28,7 @@ const routes: Routes = [
     ActivitiesComponent,
     SchoolsComponent,
     HomeComponent,
-    FilterPipe
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,15 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    NgbModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: "toast-bottom-right",
+      preventDuplicates: true,
+      timeOut: 3000,
+    }),
+    
   ],
   providers: [ActivityService],
   bootstrap: [AppComponent]
