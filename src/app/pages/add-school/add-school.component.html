@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-user">
+            <div class="card-header">
+                <h5 class="card-title">Nova Escola</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-5 pr-1">
+                            <div class="form-group">
+                                <label>Nome da Escola</label>
+                                <input type="text" id="newSchool" name="newSchool" class="form-control"
+                                    placeholder="Digite o Nome da Escola" [(ngModel)]="newSchool.title" required>
+                                <div *ngIf="!newSchool.title && isSubmitted" class="text-danger">
+                                    Digite um nome para a Escola.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="update ml-auto mr-auto">
+                            <button type="button" class="btn btn-primary btn-round" (click)="addNewSchool()">
+                                Criar Escola
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

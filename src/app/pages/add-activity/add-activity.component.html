@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-user">
+            <div class="card-header">
+                <h5 class="card-title">Nova Atividade</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-5 pr-1">
+                            <div class="form-group">
+                                <label>Titulo</label>
+                                <input type="text" id="title" name="title" class="form-control"
+                                    placeholder="Digite o Titulo da Atividade" [(ngModel)]="newActivity.title" required>
+                                <div *ngIf="!newActivity.title && isSubmitted" class="text-danger">
+                                    Título é obrigatório.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                <label>Data de Inicio</label>
+                                <input type="date" id="startDate" name="startDate" class="form-control"
+                                    [(ngModel)]="newActivity.startDate" required>
+                                <div *ngIf="!newActivity.startDate && isSubmitted" class="text-danger">
+                                    Selecione uma data.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-1">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Data do Término</label>
+                                <input type="date" id="endDate" name="endDate" class="form-control"
+                                    [(ngModel)]="newActivity.endDate" required>
+                                <div *ngIf="!newActivity.endDate && isSubmitted" class="text-danger">
+                                    Selecione uma data.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label for="schoolId">Escola</label>
+                                <select id="schoolId" name="schoolId" class="form-control"
+                                    [(ngModel)]="newActivity.schoolId" required>
+                                    <option value="" disabled selected>Escolha uma escola</option>
+                                    <option *ngFor="let school of schools" [value]="school.id">{{ school.title }}
+                                    </option>
+                                </select>
+                                <div *ngIf="!newActivity.schoolId && isSubmitted" class="text-danger">
+                                    Escolha uma escola.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label for="typeActivitie">Tipo de Atividade</label>
+                                <select id="typeActivitie" name="typeActivitie" class="form-control"
+                                    [(ngModel)]="newActivity.typeActivitie" required>
+                                    <option value="" disabled selected>Escolha uma atividade</option>
+                                    <option value="Atividade">Atividade</option>
+                                    <option value="Projeto">Projeto</option>
+                                    <option value="Clube">Clube</option>
+                                    <option value="Visita de Estudo">Visita de Estudo</option>
+                                </select>
+                                <div *ngIf="!newActivity.typeActivitie && isSubmitted" class="text-danger">
+                                    Escolha uma atividade.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Descrição da Atividade</label>
+                                <textarea id="description" name="description" class="form-control textarea"
+                                    placeholder="Descreva aqui a atividade" [(ngModel)]="newActivity.description"
+                                    required></textarea>
+                                <div *ngIf="!newActivity.description && isSubmitted" class="text-danger">
+                                    Descreva a atividade.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="newActivity.typeActivitie === 'Visita de Estudo'">
+                            <div class="form-group">
+                                <label>Roteiro</label>
+                                <textarea id="guide" name="guide" class="form-control textarea"
+                                    placeholder="Descreva o roteiro da visita de estudos"
+                                    [(ngModel)]="newActivity.guide"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="update ml-auto mr-auto">
+                            <button type="button" class="btn btn-primary btn-round" (click)="addActivity()">
+                                Criar Atividade
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

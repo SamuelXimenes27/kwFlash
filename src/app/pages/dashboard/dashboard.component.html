@@ -1,0 +1,100 @@
+<div id="loader" *ngIf="loading">
+    <span class="loader"></span><br>
+    <p>Carregando Atividades...</p>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Lista de Atividades</h4>
+            </div>
+            <div class="card-body">
+                <div *ngIf="!loading">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th>
+                                    Titulo
+                                </th>
+                                <th>
+                                    Data de Inicio
+                                </th>
+                                <th>
+                                    Escola
+                                </th>
+                                <th class="text-left">
+                                    Ações
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let activity of activities | filter: filterTitle">
+                                    <td>
+                                        {{ activity.id }}
+                                    </td>
+                                    <td>
+                                        {{ activity.typeActivitie }}
+                                    </td>
+                                    <td>
+                                        {{ activity.title }}
+                                    </td>
+                                    <td>
+                                        {{ activity.startDate }}
+                                    </td>
+                                    <td>
+                                        {{ activity.schoolId }}
+                                    </td>
+                                    <td>
+                                        <a [routerLink]="['/see-activity', activity.id]">
+                                            <ng-icon name="heroEye" style="height: 30px; font-size: 20px;"></ng-icon>
+                                        </a>
+                                        <span class="icon-space" *ngIf="isRoleAdmin()"></span>
+                                        <a [routerLink]="['/edit-activity', activity.id]">
+                                            <ng-icon name="heroPencil" style="height: 30px; font-size: 20px;"
+                                                *ngIf="isRoleAdmin()"></ng-icon>
+                                        </a>
+                                        <span class="icon-space" *ngIf="isRoleAdmin()"></span>
+                                        <a href="javascript:void(0)"
+                                            (click)="openDeleteConfirmationPopup(deleteConfirmationModal, activity)">
+                                            <ng-icon name="heroTrash" style="height: 30px; font-size: 20px;"
+                                                *ngIf="isRoleAdmin()"></ng-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #deleteConfirmationModal let-modal>
+    <div class="modal-container">
+        <div class="modal-content bg-white p-8 rounded-lg">
+            <div class="modal-header">
+                <h4 class="modal-title" style="font-weight: bold;">Confirme a Exclusão</h4>
+            </div>
+            <div class="modal-body">
+                <p>Para deletar, digite a senha:</p>
+                <input type="password" placeholder="Senha de Administrador" [(ngModel)]="adminPassword"
+                    class="border border-gray-300 px-4 py-2 rounded-lg mb-2">
+                <div *ngIf="!adminPassword && isSubmitted" class="text-danger">
+                    Digite uma senha.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-round" (click)="modal.dismiss()">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-round"
+                    (click)="confirmDeleteActivity(modal)">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

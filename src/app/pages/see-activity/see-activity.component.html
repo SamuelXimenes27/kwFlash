@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-user">
+            <div class="card-header">
+                <h5 class="card-title">Ver Atividade</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-5 pr-1">
+                            <div class="form-group">
+                                <label>Titulo</label>
+                                <input type="text" id="title" name="title" class="form-control"
+                                    [(ngModel)]="activity.title" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                <label>Data de Inicio</label>
+                                <input type="date" id="startDate" name="startDate" class="form-control"
+                                    [(ngModel)]="activity.startDate" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-1">
+                            <div class="form-group">
+                                <label>Data do Término</label>
+                                <input type="date" id="endDate" name="endDate" class="form-control"
+                                    [(ngModel)]="activity.endDate" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Escola</label>
+                                <input type="text" id="schoolId" name="schoolId" class="form-control"
+                                    [(ngModel)]="activity.schoolId" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Tipo de Atividade</label>
+                                <input type="text" id="typeActivitie" name="typeActivitie" class="form-control"
+                                    [(ngModel)]="activity.typeActivitie" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Descrição da Atividade</label>
+                                <textarea id="description" name="description" class="form-control textarea"
+                                    [(ngModel)]="activity.description" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="activity.typeActivitie === 'Visita de Estudo'">
+                            <div class="form-group">
+                                <label>Roteiro</label>
+                                <textarea id="guide" name="guide" class="form-control textarea"
+                                    [(ngModel)]="activity.guide" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

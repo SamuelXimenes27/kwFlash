@@ -1,0 +1,22 @@
+@import 'kw-flash/variables';
+@import 'kw-flash/mixins';
+
+// components
+@import "kw-flash/navbar";
+@import "kw-flash/sidebar-and-main-panel";
+@import "kw-flash/nucleo-outline";
+@import "kw-flash/misc";
+@import "kw-flash/inputs";
+@import "kw-flash/cards";
+@import "kw-flash/buttons";
+@import "kw-flash/tables";
+@import "kw-flash/typography";
+
+// cards
+@import "kw-flash/cards/card-plain";
+
+
+// angular differences
+@import "kw-flash/angular/sidebar-and-main-panel";
+
+@import "kw-flash/responsive";
