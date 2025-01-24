@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Activity } from '../models/activities.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../enviroments/environment'
+import { environment } from '../../../environments/environment'
 import { NotificationsService } from './notifications.service';
 import { Router } from '@angular/router';
 import { SchoolsService } from './schools.service';

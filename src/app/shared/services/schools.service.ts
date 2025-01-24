@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { School } from '../models/school.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../enviroments/environment';
+import { environment } from '../../../environments/environment';
 import { NotificationsService } from './notifications.service';
 import { Activity } from '../models/activities.model';
 
